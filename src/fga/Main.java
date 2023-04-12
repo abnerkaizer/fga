@@ -7,7 +7,7 @@ public class Main {
 		int nPop = 20;
 		int elitismo = 4;
 		int nGen = 10000;
-		IndFactory factory = new NRainhasIndFactory(4, txMutacao);
+		IndFactory factory = new NRainhasIndFactory(8, txMutacao);
 		Ag ag = new Ag();
 		Individuo melhor = ag.execute(factory, nPop, elitismo, nGen);
 		int[] genes = melhor.getGenes();

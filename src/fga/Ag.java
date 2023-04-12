@@ -31,16 +31,15 @@ public class Ag {
 				Individuo p = popIni.get(j);
 				mutantes.add(p.mutar());
 			}
+
 			List<Individuo> join = new ArrayList<Individuo>(nPop * 3);
 			join.addAll(popIni);
 			join.addAll(filhos);
 			join.addAll(mutantes);
+
 			List<Individuo> newPop = new ArrayList<Individuo>(nPop);
 			newPop.addAll(elitismo(join, elitismo));
-			// System.out.println("newPop.size - elite: " + newPop.size());
-			int pop = (nPop - elitismo);
-			newPop.addAll(roleta(join, pop));
-			// System.out.println("newPop.size - roleta: " + newPop.size());
+			newPop.addAll(roleta(join, (nPop - elitismo)));
 
 			popIni = newPop;
 		}
@@ -50,41 +49,40 @@ public class Ag {
 		return popIni.get(0);
 	}
 
-	private List<Individuo> elitismo(List<Individuo> join, int elitismo) {
+	private List<Individuo> elitismo(List<Individuo> join, int n) {
 		// Ordena em ordem crescente usando a avaliação como critério
 		sort(join);
-		List<Individuo> elite = new ArrayList<Individuo>(elitismo);
-		// Pega os 4 melhores.
-		for (int i = 0; i < elitismo; i++) {
+		List<Individuo> elite = new ArrayList<Individuo>(n);
+		// Pega os n melhores.
+		for (int i = 0; i < n; i++) {
 			elite.add(join.remove(i));
 		}
 		return elite;
 	}
 
-	private List<Individuo> roleta(List<Individuo> join, int pop) {
-		List<Individuo> escolhidos = new ArrayList<Individuo>(pop);
-		for (int i = 0; i < pop; i++) {
+	private List<Individuo> roleta(List<Individuo> join, int n) {
+		List<Individuo> escolhidos = new ArrayList<Individuo>(n);
+		for (int i = 0; i < n; i++) {
 			double sum = 0;
 			for (Individuo individuo : join) {
-				sum += 1 / individuo.getAvaliacao();
+				sum += (1 / individuo.getAvaliacao());
 			}
-			double sum2 = 0;
+
 			double r = rand.nextDouble() * sum;
+			sum = 0;
 			for (Individuo individuo : join) {
-				double aval = individuo.getAvaliacao();
-				if (sum2 >= r) {
+				if (sum >= r) {
 					escolhidos.add(individuo);
 					join.remove(individuo);
-					sum -= 1 / aval;
 					break;
 				} else {
-					sum2 += 1 / aval;
+					sum += (1 / individuo.getAvaliacao());
 				}
 			}
 		}
-
 		return escolhidos;
 	}
+
 	private void sort(List<Individuo> list) {
 		Collections.sort(list, new Comparator<Individuo>() {
 			@Override

@@ -7,10 +7,17 @@ import java.util.Random;
 public class NRainhasInd implements Individuo {
 	private int[] genes;
 	private double txMutacao;
-	private double avaliacao;
 	private int nRainhas;
 	private Random rand;
-
+	public NRainhasInd(int nRainhas, double txMutacao) {
+		this.nRainhas = nRainhas;
+		this.genes = new int[nRainhas];
+		this.txMutacao = txMutacao;
+		this.rand = new Random();
+		for (int i = 0; i < genes.length; i++) {
+			genes[i] = rand.nextInt(nRainhas);
+		}
+	}
 	public NRainhasInd(Individuo ind) {
 		this.genes = ind.getGenes();
 	}
@@ -28,32 +35,17 @@ public class NRainhasInd implements Individuo {
 	}
 
 	public double getAvaliacao() {
-		if (this.avaliacao < 0) {
-			this.avaliacao = 0;
-			for (int i = 0; i < this.nRainhas; i++) {
-				for (int j = i; j < this.nRainhas; j++) {
-					if (j != i) {
-						int d = j - i;
-						if (this.genes[i] == this.genes[j] || (this.genes[j] - d) == this.genes[i]
-								|| (this.genes[j] + d) == this.genes[i]) {
-							this.avaliacao++;
-						}
-					}
+		double avaliacao = 0;
+		for (int i = 0; i < this.nRainhas; i++) {
+			for (int j = i+1; j < this.nRainhas; j++) {
+				int d = j - i;
+				if (this.genes[i] == this.genes[j] || (this.genes[j] - d) == this.genes[i]
+						|| (this.genes[j] + d) == this.genes[i]) {
+					avaliacao++;
 				}
 			}
 		}
-		return this.avaliacao;
-	}
-
-	public NRainhasInd(int nRainhas, double txMutacao) {
-		this.nRainhas = nRainhas;
-		this.genes = new int[nRainhas];
-		this.txMutacao = txMutacao;
-		this.rand = new Random();
-		this.avaliacao = -1.0;
-		for (int i = 0; i < genes.length; i++) {
-			genes[i] = rand.nextInt(nRainhas);
-		}
+		return avaliacao;
 	}
 
 	public Individuo mutar() {
