@@ -45,24 +45,14 @@ public class Ag {
 			popIni = newPop;
 		}
 		// Ordena em ordem crescente usando avaliação como critério
-		Collections.sort(popIni, new Comparator<Individuo>() {
-			@Override
-			public int compare(Individuo p1, Individuo p2) {
-				return Double.compare(p1.getAvaliacao(), p2.getAvaliacao());
-			}
-		});
+		sort(popIni);
 		// Retorna o melhor
 		return popIni.get(0);
 	}
 
 	private List<Individuo> elitismo(List<Individuo> join, int elitismo) {
 		// Ordena em ordem crescente usando a avaliação como critério
-		Collections.sort(join, new Comparator<Individuo>() {
-			@Override
-			public int compare(Individuo p1, Individuo p2) {
-				return Double.compare(p1.getAvaliacao(), p2.getAvaliacao());
-			}
-		});
+		sort(join);
 		List<Individuo> elite = new ArrayList<Individuo>(elitismo);
 		// Pega os 4 melhores.
 		for (int i = 0; i < elitismo; i++) {
@@ -94,5 +84,13 @@ public class Ag {
 		}
 
 		return escolhidos;
+	}
+	private void sort(List<Individuo> list) {
+		Collections.sort(list, new Comparator<Individuo>() {
+			@Override
+			public int compare(Individuo p1, Individuo p2) {
+				return Double.compare(p1.getAvaliacao(), p2.getAvaliacao());
+			}
+		});
 	}
 }
