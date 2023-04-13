@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-public class Ag {
+public class FGA {
 	Random rand = new Random();
 
 	public Individuo execute(IndFactory factory, int nPop, int elitismo, int nGen) {
